@@ -1,16 +1,15 @@
 package com.example.mytodoapp.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.mytodoapp.Task
+import com.example.mytodoapp.data.Task
 import com.example.mytodoapp.databinding.ItemListItemBinding
 
 class ItemListAdapter(
-
+    private val onTaskClicked: (Task) -> Unit
 ) : ListAdapter<Task, ItemListAdapter.ItemListViewHolder>(DiffCallback) {
 
     class ItemListViewHolder(private var binding: ItemListItemBinding) : ViewHolder(binding.root) {
@@ -30,6 +29,9 @@ class ItemListAdapter(
 
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
         val current = getItem(position)
+        holder.itemView.setOnClickListener {
+            onTaskClicked(current)
+        }
         holder.bind(current)
     }
 

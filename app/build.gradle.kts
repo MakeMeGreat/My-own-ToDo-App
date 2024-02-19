@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp") version "1.8.21-1.0.11"
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -51,6 +52,9 @@ dependencies {
     // Lifecycle libraries
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    // Navigation libraries
+    implementation ("androidx.navigation:navigation-fragment-ktx:${rootProject.extra["navigation_version"]}")
+    implementation ("androidx.navigation:navigation-ui-ktx:$${rootProject.extra["navigation_version"]}")
     // Room libraries
     implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
     implementation("androidx.core:core-ktx:1.10.1")
