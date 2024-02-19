@@ -41,6 +41,30 @@ class ToDoViewModel(private val taskDao: TaskDao) : ViewModel() {
         insertTask(newTask)
     }
 
+    private fun updateTask(task: Task) {
+        viewModelScope.launch {
+            taskDao.update(task)
+        }
+    }
+
+    private fun getUpdatedTask(
+        id: Int,
+        description: String,
+        complete: Boolean
+    ): Task {
+        return Task(id, description, complete)
+    }
+
+    fun updateTask(taskId: Int, taskDescription: String, taskCompleted: Boolean) {
+        val updateTask = getUpdatedTask(taskId, taskDescription, taskCompleted)
+        updateTask(updateTask)
+    }
+
+    fun updateComplete(task: Task) {
+        val taskCopy = task.copy(complete = !task.complete)
+        updateTask(taskCopy)
+    }
+
 }
 
 class TodoViewModelFactory(private val taskDao: TaskDao) : ViewModelProvider.Factory {

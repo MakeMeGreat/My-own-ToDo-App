@@ -1,5 +1,6 @@
 package com.example.mytodoapp.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -16,6 +17,12 @@ class ItemListAdapter(
         fun bind(task: Task) {
             binding.taskDescription.text = task.description
             binding.taskComplete.isChecked = task.complete
+            if (task.complete) {
+                binding.taskDescription.apply {
+                    paint.isStrikeThruText = true
+                    setTextColor(Color.GRAY)
+                }
+            }
         }
     }
 
