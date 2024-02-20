@@ -37,10 +37,17 @@ class ItemListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = ItemListAdapter {
-            val action = ItemListFragmentDirections.actionItemListFragmentToEditFragment(it.id)
-            findNavController().navigate(action)
-        }
+        val adapter = ItemListAdapter(object : ItemListAdapter.Listener {
+            override fun onTaskClicked(task: Task) {
+                val action = ItemListFragmentDirections.actionItemListFragmentToEditFragment(task.id)
+                findNavController().navigate(action)
+            }
+
+            override fun onCompleteCheckBoxClicked(task: Task) {
+                viewModel.updateComplete(task)
+            }
+
+        })
         binding.recyclerView.adapter = adapter
         viewModel.allTasks.observe(this.viewLifecycleOwner) {items ->
             items.let {

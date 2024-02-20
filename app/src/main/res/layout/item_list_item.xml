@@ -21,10 +21,10 @@
                 android:id="@+id/task_complete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                 />
 
             <TextView
                 android:id="@+id/task_description"
@@ -41,6 +41,8 @@
                 app:layout_constraintStart_toEndOf="@+id/task_complete"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="dfb sfgb asdv df vsdf v fv adfv sd fvs dvaf v sdfv sdf vs d sdfv sd f sd " />
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
