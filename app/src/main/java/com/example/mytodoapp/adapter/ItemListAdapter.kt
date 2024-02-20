@@ -13,7 +13,8 @@ import com.example.mytodoapp.databinding.ItemListItemBinding
 
 class ItemListAdapter(
     private val listener: Listener
-) : ListAdapter<Task, ItemListAdapter.ItemListViewHolder>(DiffCallback), View.OnClickListener {
+) : ListAdapter<Task, ItemListAdapter.ItemListViewHolder>(DiffCallback), View.OnClickListener,
+    View.OnLongClickListener {
 
     override fun onClick(v: View) {
         val task = v.tag as Task
@@ -21,6 +22,12 @@ class ItemListAdapter(
             R.id.task_complete -> listener.onCompleteCheckBoxClicked(task)
             else -> listener.onTaskClicked(task)
         }
+    }
+
+    override fun onLongClick(v: View): Boolean {
+        val task = v.tag as Task
+        listener.onLongClick(task)
+        return true
     }
 
     class ItemListViewHolder(val binding: ItemListItemBinding) : ViewHolder(binding.root) {
@@ -47,13 +54,14 @@ class ItemListAdapter(
 
         binding.taskComplete.setOnClickListener(this)
         binding.root.setOnClickListener(this)
+        binding.root.setOnLongClickListener(this)
 
         return ItemListViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
         val current = getItem(position)
-        holder.apply{
+        holder.apply {
             binding.root.tag = current
             binding.taskComplete.tag = current
             bind(current)
@@ -63,6 +71,7 @@ class ItemListAdapter(
     interface Listener {
         fun onTaskClicked(task: Task)
         fun onCompleteCheckBoxClicked(task: Task)
+        fun onLongClick(task: Task)
     }
 
     companion object {

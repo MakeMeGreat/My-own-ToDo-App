@@ -1,10 +1,10 @@
 package com.example.mytodoapp
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.mytodoapp.databinding.FragmentCreateTaskBinding
@@ -12,7 +12,7 @@ import com.example.mytodoapp.databinding.FragmentCreateTaskBinding
 
 class CreateTaskFragment : Fragment() {
 
-    private val viewModel: ToDoViewModel by activityViewModels{
+    private val viewModel: ToDoViewModel by activityViewModels {
         TodoViewModelFactory(
             (activity?.application as ToDoApplication).database.taskDao()
         )
@@ -24,7 +24,7 @@ class CreateTaskFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCreateTaskBinding.inflate(inflater)
         return binding.root
     }

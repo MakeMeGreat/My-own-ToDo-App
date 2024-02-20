@@ -1,24 +1,21 @@
 package com.example.mytodoapp
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.ActivityNavigator
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mytodoapp.adapter.ItemListAdapter
 import com.example.mytodoapp.data.Task
-import com.example.mytodoapp.data.TaskDao
 import com.example.mytodoapp.databinding.FragmentItemListBinding
 
 class ItemListFragment : Fragment() {
 
-    private val viewModel: ToDoViewModel by activityViewModels{
+    private val viewModel: ToDoViewModel by activityViewModels {
         TodoViewModelFactory(
             (activity?.application as ToDoApplication).database.taskDao()
         )
@@ -30,7 +27,7 @@ class ItemListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentItemListBinding.inflate(inflater)
         return binding.root
     }
@@ -39,7 +36,8 @@ class ItemListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val adapter = ItemListAdapter(object : ItemListAdapter.Listener {
             override fun onTaskClicked(task: Task) {
-                val action = ItemListFragmentDirections.actionItemListFragmentToEditFragment(task.id)
+                val action =
+                    ItemListFragmentDirections.actionItemListFragmentToEditFragment(task.id)
                 findNavController().navigate(action)
             }
 
@@ -47,20 +45,38 @@ class ItemListFragment : Fragment() {
                 viewModel.updateComplete(task)
             }
 
+            override fun onLongClick(task: Task) {
+                showDialog(task)
+            }
         })
         binding.recyclerView.adapter = adapter
-        viewModel.allTasks.observe(this.viewLifecycleOwner) {items ->
+        viewModel.allTasks.observe(this.viewLifecycleOwner) { items ->
             items.let {
                 adapter.submitList(it)
             }
         }
 
-
-
-
         binding.FAB.setOnClickListener {
             findNavController().navigate(R.id.action_itemListFragment_to_createTaskFragment)
         }
+    }
+
+    fun showDialog(task: Task) {
+        val listener = DialogInterface.OnClickListener { _, which ->
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                viewModel.deleteTask(task)
+            }
+        }
+
+        val dialog = AlertDialog.Builder(context)
+            .setIcon(R.drawable.delete_img)
+            .setTitle("Delete task")
+            .setMessage("Are you sure want delete this task?")
+            .setPositiveButton("Yes", listener)
+            .setNegativeButton("No", listener)
+            .create()
+
+        dialog.show()
     }
 
     override fun onDestroyView() {

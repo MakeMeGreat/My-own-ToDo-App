@@ -16,11 +16,10 @@ abstract class TaskRoomDatabase : RoomDatabase() {
         fun getDatabase(context: Context): TaskRoomDatabase {
 
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
+                return Room.databaseBuilder(
                     context, TaskRoomDatabase::class.java, "task_database"
                 ).fallbackToDestructiveMigration().build()
                     .also { INSTANCE = it }
-                return instance
             }
         }
     }

@@ -29,14 +29,13 @@ class EditFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentEditBinding.inflate(inflater)
         return binding.root
     }
 
-    fun bind(task: Task) {
+    private fun bind(task: Task) {
         binding.editText.text = Editable.Factory.getInstance().newEditable(task.description)
-        binding.isDoneCheckBox.isChecked = task.complete
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,20 +47,15 @@ class EditFragment : Fragment() {
                 bind(task)
             }
         }
-        binding.deleteButton.setOnClickListener {
-            viewModel.deleteTask(task)
-            findNavController().navigate(R.id.action_editFragment_to_itemListFragment)
-        }
 
         binding.upgradeButton.setOnClickListener {
             viewModel.updateTask(
                 navigationArgs.id,
                 binding.editText.text.toString(),
-                binding.isDoneCheckBox.isChecked
+                task.complete
             )
             findNavController().navigate(R.id.action_editFragment_to_itemListFragment)
         }
-
     }
 
     override fun onDestroyView() {
